@@ -6,10 +6,10 @@
   </p>
   <p align="center">
     <a href="https://github.com/Kilowatch/HawkeyeTVBrowser/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="License: GPL v3"></a>
-    <img src="https://img.shields.io/badge/platform-Android%20TV-brightgreen" alt="Platform: Android TV">
-    <img src="https://img.shields.io/badge/language-Kotlin-purple" alt="Language: Kotlin">
-    <img src="https://img.shields.io/badge/API-24+-orange" alt="Min SDK: 24">
-    <img src="https://img.shields.io/badge/UI-Jetpack%20Compose%20for%20TV-4285F4" alt="UI: Compose for TV">
+    <img src="https://img.shields.io/badge/Platform-Android_TV-3DDC84?logo=android&logoColor=white" alt="Platform: Android TV">
+    <img src="https://img.shields.io/badge/Language-Kotlin-7F52FF?logo=kotlin&logoColor=white" alt="Language: Kotlin">
+    <img src="https://img.shields.io/badge/Min_SDK-24-FF6F00?logo=android&logoColor=white" alt="Min SDK: 24">
+    <img src="https://img.shields.io/badge/UI-Compose_TV-4285F4?logo=jetpackcompose&logoColor=white" alt="UI: Compose for TV">
   </p>
 </div>
 
@@ -170,7 +170,7 @@ Contributions are welcome! Please follow our development pipeline:
 
 1. **Specify** — Open an issue describing what you want to build
 2. **Plan** — Discuss architecture and implementation approach
-3. **Implement** — Write code following the project conventions (see [CLAUDE.md](CLAUDE.md))
+3. **Implement** — Write code following the project conventions
 4. **Review** — Ensure code quality and test coverage
 
 This project follows the [Spec-Driven Development](https://en.wikipedia.org/wiki/Specification-driven_development) pipeline. All planning artifacts are stored in the `.plans/` directory and committed alongside code changes.
