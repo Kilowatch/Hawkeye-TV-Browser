@@ -6,10 +6,10 @@
   </p>
   <p align="center">
     <a href="https://github.com/Kilowatch/Hawkeye-TV-Browser/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="License: GPL v3"></a>
-    <img src="https://img.shields.io/badge/Platform-Android%20TV-3DDC84.svg?logo=android&logoColor=white" alt="Platform: Android TV">
-    <img src="https://img.shields.io/badge/Language-Kotlin-7F52FF.svg?logo=kotlin&logoColor=white" alt="Language: Kotlin">
-    <img src="https://img.shields.io/badge/Min%20SDK-24-FF6F00.svg?logo=android&logoColor=white" alt="Min SDK: 24">
-    <img src="https://img.shields.io/badge/UI-Compose%20TV-4285F4.svg?logo=jetpackcompose&logoColor=white" alt="UI: Compose for TV">
+    <img src="https://badgen.net/badge/Platform/Android%20TV/3DDC84?icon=android" alt="Platform: Android TV">
+    <img src="https://badgen.net/badge/Language/Kotlin/7F52FF?icon=kotlin" alt="Language: Kotlin">
+    <img src="https://badgen.net/badge/Min%20SDK/24/FF6F00?icon=android" alt="Min SDK: 24">
+    <img src="https://badgen.net/badge/UI/Compose%20TV/4285F4?icon=jetpackcompose" alt="UI: Compose for TV">
   </p>
 </div>
 
