@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hawkeye TV Browser</string>
+
+    <!-- Browser Screen -->
+    <string name="search_or_enter_url">Search or enter URL</string>
+    <string name="browser_back">Back</string>
+    <string name="browser_forward">Forward</string>
+    <string name="browser_refresh">Refresh</string>
+    <string name="browser_stop">Stop</string>
+    <string name="browser_menu">Menu</string>
+    <string name="browser_go">Go</string>
+
+    <!-- Toolbar Menu -->
+    <string name="menu_new_tab">New Tab</string>
+    <string name="menu_new_incognito_tab">Incognito</string>
+    <string name="menu_desktop_site">Desktop Site</string>
+    <string name="menu_mobile_site">Mobile Site</string>
+    <string name="menu_bookmarks">Bookmarks</string>
+    <string name="menu_history">History</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Tab Manager -->
+    <string name="tabs_title">Tabs</string>
+    <string name="tabs_new_tab">+ New Tab</string>
+    <string name="tab_new_title">New Tab</string>
+    <string name="tab_incognito_title">Incognito Tab</string>
+    <string name="tab_incognito_label">Incognito</string>
+
+    <!-- Bookmarks -->
+    <string name="bookmarks_title">Bookmarks</string>
+    <string name="bookmarks_empty">No bookmarks yet</string>
+    <string name="bookmarks_delete">Delete</string>
+    <string name="bookmarks_back">Back</string>
+
+    <!-- History -->
+    <string name="history_title">History</string>
+    <string name="history_empty">No browsing history</string>
+    <string name="history_search">Search history</string>
+    <string name="history_clear_all">Clear All</string>
+    <string name="history_back">Back</string>
+    <string name="history_search_results">Search Results</string>
+    <string name="history_today">Today</string>
+    <string name="history_yesterday">Yesterday</string>
+    <string name="history_last_7_days">Last 7 Days</string>
+    <string name="history_last_30_days">Last 30 Days</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_search_engine">Search Engine</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_text_size">Text Size</string>
+    <string name="settings_desktop_mode">Desktop Mode</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_do_not_track">Do Not Track</string>
+    <string name="settings_block_popups">Block Pop-ups</string>
+    <string name="settings_cursor">Cursor</string>
+    <string name="settings_cursor_speed">Cursor Speed</string>
+    <string name="settings_clear_data">Clear Browsing Data</string>
+    <string name="settings_data">Data</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Hawkeye TV Browser v1.0</string>
+    <string name="settings_back_to_browser">Back to Browser</string>
+
+    <!-- Search Engines -->
+    <string name="search_google">Google</string>
+    <string name="search_bing">Bing</string>
+    <string name="search_yahoo">Yahoo</string>
+    <string name="search_duckduckgo">DuckDuckGo</string>
+
+    <!-- Downloader Code Dialog -->
+    <string name="downloader_code_title">Downloader Code</string>
+    <string name="downloader_code_resolves_to">This code resolves to:</string>
+    <string name="downloader_code_host">Host</string>
+    <string name="downloader_source_trusted">Source: Trusted</string>
+    <string name="downloader_source_unknown">Source: Unknown - exercise caution</string>
+    <string name="downloader_apk_warning">WARNING: This is an APK file. Installing apps from outside the Play Store may pose a security risk.</string>
+    <string name="downloader_open">Open</string>
+    <string name="downloader_install_apk">Install APK</string>
+    <string name="downloader_cancel">Cancel</string>
+    <string name="downloader_code_error">Downloader Code Error</string>
+    <string name="downloader_code_not_found">Code \'%1$s\' was not found. It may have expired or never existed.</string>
+    <string name="downloader_network_error">Network error. Check your internet connection.</string>
+    <string name="downloader_timeout">Connection timed out. Check your internet connection.</string>
+
+    <!-- Clear Data Dialog -->
+    <string name="clear_data_title">Clear Browsing Data</string>
+    <string name="clear_data_history">Browsing History</string>
+    <string name="clear_data_cache">Cache</string>
+    <string name="clear_data_cookies">Cookies</string>
+    <string name="clear_data_clear">Clear</string>
+    <string name="clear_data_cancel">Cancel</string>
+
+    <!-- Start Page -->
+    <string name="start_page_title">Hawkeye TV Browser</string>
+    <string name="quick_links">Quick Links</string>
+    <string name="recently_visited">Recently Visited</string>
+    <string name="recently_visited_empty">Your recent sites will appear here</string>
+    <string name="clear">Clear</string>
+
+    <!-- Incognito -->
+    <string name="incognito_mode">Incognito Mode</string>
+
+    <!-- Navigation Mode -->
+    <string name="cursor_mode">Cursor Mode</string>
+    <string name="spatial_mode">Spatial Mode</string>
+</resources>

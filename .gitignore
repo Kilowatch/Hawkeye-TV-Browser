@@ -1,0 +1,51 @@
+# IDE
+*.iml
+/.idea
+/workspace.xml
+
+# Gradle
+.gradle
+/build
+/app/build
+
+# Local
+/local.properties
+.DS_Store
+
+# Native
+.externalNativeBuild
+.cxx
+/ndk
+
+# Build artifacts
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+/release
+
+# Signing
+*.keystore
+!debug.keystore
+
+# Logs & traces
+*.log
+*.hprof
+*.trace
+
+# Captures
+/captures
+
+# Project artifacts
+.claude/
+.plans/
+Hawkeye TV Browser.txt
+Silk.md
+CLAUDE.md
+
+# Logo (only amber variant tracked)
+hawkeye_tv_logo.png

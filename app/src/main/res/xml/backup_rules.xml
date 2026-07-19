@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclude Room database containing browsing history and bookmarks -->
+    <exclude domain="database" path="hawkeye_browser.db" />
+    <exclude domain="database" path="hawkeye_browser.db-shm" />
+    <exclude domain="database" path="hawkeye_browser.db-wal" />
+
+    <!-- Exclude incognito cache -->
+    <exclude domain="cache" path="incognito_cache" />
+
+    <!-- Include settings (non-sensitive) -->
+    <include domain="sharedpref" path="hawkeye_settings.xml" />
+</full-backup-content>

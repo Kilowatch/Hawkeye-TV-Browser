@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.HawkeyeTVBrowser" parent="Theme.AppCompat.DayNight.NoActionBar" />
+</resources>
