@@ -5,11 +5,11 @@
     <strong>A premium web browser for Android TV & Google TV</strong>
   </p>
   <p align="center">
-    <a href="https://github.com/Kilowatch/HawkeyeTVBrowser/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="License: GPL v3"></a>
-    <img src="https://img.shields.io/badge/Platform-Android_TV-3DDC84?logo=android&logoColor=white" alt="Platform: Android TV">
-    <img src="https://img.shields.io/badge/Language-Kotlin-7F52FF?logo=kotlin&logoColor=white" alt="Language: Kotlin">
-    <img src="https://img.shields.io/badge/Min_SDK-24-FF6F00?logo=android&logoColor=white" alt="Min SDK: 24">
-    <img src="https://img.shields.io/badge/UI-Compose_TV-4285F4?logo=jetpackcompose&logoColor=white" alt="UI: Compose for TV">
+    <a href="https://github.com/Kilowatch/Hawkeye-TV-Browser/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="License: GPL v3"></a>
+    <img src="https://img.shields.io/badge/Platform-Android%20TV-3DDC84.svg?logo=android&logoColor=white" alt="Platform: Android TV">
+    <img src="https://img.shields.io/badge/Language-Kotlin-7F52FF.svg?logo=kotlin&logoColor=white" alt="Language: Kotlin">
+    <img src="https://img.shields.io/badge/Min%20SDK-24-FF6F00.svg?logo=android&logoColor=white" alt="Min SDK: 24">
+    <img src="https://img.shields.io/badge/UI-Compose%20TV-4285F4.svg?logo=jetpackcompose&logoColor=white" alt="UI: Compose for TV">
   </p>
 </div>
 
@@ -86,8 +86,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/Kilowatch/HawkeyeTVBrowser.git
-cd HawkeyeTVBrowser
+git clone https://github.com/Kilowatch/Hawkeye-TV-Browser.git
+cd Hawkeye-TV-Browser
 
 # Build a debug APK
 ./gradlew assembleDebug
@@ -129,7 +129,7 @@ cd HawkeyeTVBrowser
 
 ### Downloader Codes
 
-Type a **numeric-only** code (1–6 digits) in the URL bar and press Go. Hawkeye resolves it against `aftv.news` and presents a confirmation dialog showing the destination URL, file type, and trust level. You choose whether to proceed.
+Type a **numeric-only** code (1–8 digits) in the URL bar and press Go. Hawkeye resolves it against `aftv.news` and presents a confirmation dialog showing the destination URL, file type, and trust level. You choose whether to proceed.
 
 ## 🗺️ Roadmap
 
@@ -163,17 +163,6 @@ Type a **numeric-only** code (1–6 digits) in the URL bar and press Go. Hawkeye
 - [ ] Picture-in-Picture video playback
 - [ ] HTTP/2 connection optimisation
 - [ ] Cross-device sync (bookmarks & history)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow our development pipeline:
-
-1. **Specify** — Open an issue describing what you want to build
-2. **Plan** — Discuss architecture and implementation approach
-3. **Implement** — Write code following the project conventions
-4. **Review** — Ensure code quality and test coverage
-
-This project follows the [Spec-Driven Development](https://en.wikipedia.org/wiki/Specification-driven_development) pipeline. All planning artifacts are stored in the `.plans/` directory and committed alongside code changes.
 
 ## 📄 License
 
