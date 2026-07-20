@@ -28,7 +28,7 @@ class WebViewManager @Inject constructor(
     @SuppressLint("SetJavaScriptEnabled")
     fun configureWebView(webView: WebView, incognito: Boolean = false) {
         webView.settings.apply {
-            javaScriptEnabled = true
+            javaScriptEnabled = settingsRepo.isJavaScriptEnabled()
             domStorageEnabled = true
             databaseEnabled = true
             cacheMode = WebSettings.LOAD_DEFAULT
@@ -53,6 +53,23 @@ class WebViewManager @Inject constructor(
 
             setSupportMultipleWindows(settingsRepo.isPopupBlockingEnabled())
             javaScriptCanOpenWindowsAutomatically = !settingsRepo.isPopupBlockingEnabled()
+        }
+
+        // Configure Cookie Manager
+        val cookieManager = CookieManager.getInstance()
+        when (settingsRepo.getCookiePolicy()) {
+            "BLOCK_ALL" -> {
+                cookieManager.setAcceptCookie(false)
+                cookieManager.setAcceptThirdPartyCookies(webView, false)
+            }
+            "BLOCK_THIRD_PARTY" -> {
+                cookieManager.setAcceptCookie(true)
+                cookieManager.setAcceptThirdPartyCookies(webView, false)
+            }
+            "ALLOW_ALL" -> {
+                cookieManager.setAcceptCookie(true)
+                cookieManager.setAcceptThirdPartyCookies(webView, true)
+            }
         }
 
         webView.setLayerType(WebView.LAYER_TYPE_HARDWARE, null)

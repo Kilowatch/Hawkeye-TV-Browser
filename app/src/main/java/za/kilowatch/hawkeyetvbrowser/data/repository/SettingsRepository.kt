@@ -18,6 +18,14 @@ class SettingsRepository @Inject constructor(
         private const val KEY_CURSOR_COLOR = "cursor_color"
         private const val KEY_CURSOR_SPEED = "cursor_speed"
         private const val KEY_NAV_MODE = "navigation_mode"
+        private const val KEY_DOH_PROVIDER = "doh_provider"
+        private const val KEY_DOH_CUSTOM_URL = "doh_custom_url"
+        private const val KEY_ADBLOCK_ENABLED = "adblock_enabled"
+        private const val KEY_SAFE_BROWSING_ENABLED = "safe_browsing_enabled"
+        private const val KEY_HIGH_CONTRAST_ENABLED = "high_contrast_enabled"
+        private const val KEY_FORCE_ZOOM_ENABLED = "force_zoom_enabled"
+        private const val KEY_COOKIE_POLICY = "cookie_policy"
+        private const val KEY_JAVASCRIPT_ENABLED = "javascript_enabled"
 
         private const val DEFAULT_TEXT_ZOOM = 100
         private const val DEFAULT_CURSOR_COLOR = -0x1a1b00 // neon cyan
@@ -42,8 +50,8 @@ class SettingsRepository @Inject constructor(
         prefs.edit().putInt(KEY_TEXT_ZOOM, zoom.coerceIn(50, 200)).apply()
     }
 
-    // Desktop Mode
-    fun isDesktopMode(): Boolean = prefs.getBoolean(KEY_DESKTOP_MODE, false)
+    // Desktop Mode (Default: true for Android TV)
+    fun isDesktopMode(): Boolean = prefs.getBoolean(KEY_DESKTOP_MODE, true)
 
     fun setDesktopMode(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_DESKTOP_MODE, enabled).apply()
@@ -82,5 +90,62 @@ class SettingsRepository @Inject constructor(
 
     fun setCursorMode(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_NAV_MODE, enabled).apply()
+    }
+
+    // ── Phase 2 Settings ──
+
+    // DoH Provider (OFF, CLOUDFLARE, GOOGLE, ADGUARD, CUSTOM)
+    fun getDohProvider(): String = prefs.getString(KEY_DOH_PROVIDER, "OFF") ?: "OFF"
+
+    fun setDohProvider(provider: String) {
+        prefs.edit().putString(KEY_DOH_PROVIDER, provider).apply()
+    }
+
+    fun getDohCustomUrl(): String = prefs.getString(KEY_DOH_CUSTOM_URL, "") ?: ""
+
+    fun setDohCustomUrl(url: String) {
+        prefs.edit().putString(KEY_DOH_CUSTOM_URL, url).apply()
+    }
+
+    // Ad Blocking
+    fun isAdBlockEnabled(): Boolean = prefs.getBoolean(KEY_ADBLOCK_ENABLED, true)
+
+    fun setAdBlockEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_ADBLOCK_ENABLED, enabled).apply()
+    }
+
+    // Safe Browsing
+    fun isSafeBrowsingEnabled(): Boolean = prefs.getBoolean(KEY_SAFE_BROWSING_ENABLED, true)
+
+    fun setSafeBrowsingEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_SAFE_BROWSING_ENABLED, enabled).apply()
+    }
+
+    // High Contrast Mode
+    fun isHighContrastEnabled(): Boolean = prefs.getBoolean(KEY_HIGH_CONTRAST_ENABLED, false)
+
+    fun setHighContrastEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_HIGH_CONTRAST_ENABLED, enabled).apply()
+    }
+
+    // Force Enable Zoom
+    fun isForceZoomEnabled(): Boolean = prefs.getBoolean(KEY_FORCE_ZOOM_ENABLED, false)
+
+    fun setForceZoomEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_FORCE_ZOOM_ENABLED, enabled).apply()
+    }
+
+    // Cookie Policy (ALLOW_ALL, BLOCK_THIRD_PARTY, BLOCK_ALL)
+    fun getCookiePolicy(): String = prefs.getString(KEY_COOKIE_POLICY, "BLOCK_THIRD_PARTY") ?: "BLOCK_THIRD_PARTY"
+
+    fun setCookiePolicy(policy: String) {
+        prefs.edit().putString(KEY_COOKIE_POLICY, policy).apply()
+    }
+
+    // JavaScript Toggle
+    fun isJavaScriptEnabled(): Boolean = prefs.getBoolean(KEY_JAVASCRIPT_ENABLED, true)
+
+    fun setJavaScriptEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_JAVASCRIPT_ENABLED, enabled).apply()
     }
 }

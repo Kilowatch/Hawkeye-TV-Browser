@@ -38,6 +38,12 @@ android {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=androidx.tv.material3.ExperimentalTvMaterial3Api")
+    }
+}
+
 dependencies {
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
@@ -47,6 +53,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // AndroidX
     implementation(libs.androidx.core.ktx)
@@ -70,6 +77,7 @@ dependencies {
 
     // Networking
     implementation(libs.okhttp)
+    implementation(libs.okhttp.dnsoverhttps)
 
     // Image Loading
     implementation(libs.coil.compose)

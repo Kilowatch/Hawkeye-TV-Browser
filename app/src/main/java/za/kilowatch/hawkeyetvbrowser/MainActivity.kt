@@ -61,7 +61,7 @@ fun AppNavHost(
 
         composable("bookmarks") {
             za.kilowatch.hawkeyetvbrowser.ui.bookmarks.BookmarkScreen(
-                onBookmarkOpened = {
+                onBookmarkOpened = { _ ->
                     navController.popBackStack()
                 },
                 onNavigateBack = {
@@ -72,7 +72,7 @@ fun AppNavHost(
 
         composable("history") {
             za.kilowatch.hawkeyetvbrowser.ui.history.HistoryScreen(
-                onEntryOpened = {
+                onEntryOpened = { _ ->
                     navController.popBackStack()
                 },
                 onNavigateBack = {

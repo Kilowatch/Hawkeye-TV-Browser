@@ -2,6 +2,19 @@
 
 All notable changes to Hawkeye TV Browser will be documented in this file.
 
+## [1.1.0] — 2026-07-20
+
+### Added
+- **Voice Search Integration**: Built-in Android `SpeechRecognizer` service with voice command parsing ("go back", "open bookmarks", search queries) and Compose TV animated pulse visualizer dialog (`VoiceSearchDialog`).
+- **Secure DNS (DNS-over-HTTPS)**: Integrated `com.squareup.okhttp3:okhttp-dnsoverhttps:5.4.0` supporting Cloudflare (`1.1.1.1`), Google (`8.8.8.8`), AdGuard DNS, and custom endpoints in `NetworkModule`.
+- **Ad & Content Blocker Engine**: EasyList-compatible domain and pattern matching engine (`AdBlockEngine`) intercepting ad network requests in `HawkeyeWebViewClient`.
+- **Reading Mode**: Distraction-free article reader (`ReaderModeScreen`) evaluating Mozilla Readability (`readability.js`) with Dark, Sepia, and Light themes plus typography controls.
+- **Bookmark Folders**: Multi-level folder creation, folder navigation, and breadcrumb path tracking in `BookmarkDao`, `BookmarkUseCase`, and `BookmarkScreen`.
+- **Google Safe Browsing Interstitial Warning**: Red TV security warning screen (`SafeBrowsingDialog`) triggered via `onSafeBrowsingHit` callback.
+- **Accessibility Suite**: High-contrast CSS injection script and force-zoom viewport override in `AccessibilityHelper`.
+- **Desktop Mode Default**: Set Desktop User-Agent as the default experience out of the box for Android TV screens.
+- **Smart D-Pad Back Navigation**: Pressing D-pad Back on a root page with no web history resets to the Start Page state with cleared URL bar input instead of exiting. Pressing Back again from the Start Page exits the app.
+
 ## [1.0.1] — 2026-07-20
 
 ### Added

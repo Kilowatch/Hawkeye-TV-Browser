@@ -116,4 +116,91 @@
     <string name="download_dialog_close">Close</string>
     <string name="download_dialog_dismiss">Dismiss</string>
     <string name="download_dialog_downloading_status">Downloading…</string>
+
+    <!-- Phase 2: Voice Search -->
+    <string name="voice_search_title">Voice Search</string>
+    <string name="voice_search_idle">Press mic to speak</string>
+    <string name="voice_search_listening">Listening… Speak now</string>
+    <string name="voice_search_processing">Processing speech…</string>
+    <string name="voice_search_retry">Try Again</string>
+    <string name="voice_search_search">Execute / Search</string>
+    <string name="voice_search_cancel">Cancel</string>
+    <string name="voice_search_unsupported">Speech recognition is not available on this device</string>
+    <string name="voice_search_mic_desc">Voice Search Button</string>
+
+    <!-- Phase 2: Secure DNS (DoH) -->
+    <string name="settings_doh_title">Secure DNS (DNS-over-HTTPS)</string>
+    <string name="doh_provider_off">Off (System Default)</string>
+    <string name="doh_provider_cloudflare">Cloudflare (1.1.1.1)</string>
+    <string name="doh_provider_google">Google (8.8.8.8)</string>
+    <string name="doh_provider_adguard">AdGuard DNS</string>
+    <string name="doh_provider_custom">Custom DoH Endpoint</string>
+    <string name="doh_custom_url_prompt">Enter Custom DoH URL</string>
+
+    <!-- Phase 2: Ad Blocker Engine -->
+    <string name="settings_adblock_title">Ad &amp; Content Blocker</string>
+    <string name="settings_adblock_summary">Block ads, trackers, and malicious scripts</string>
+    <string name="adblock_status_active">Ad Blocking Active</string>
+    <string name="adblock_status_disabled">Ad Blocking Disabled</string>
+
+    <!-- Phase 2: Reading Mode -->
+    <string name="reader_mode_title">Reading Mode</string>
+    <string name="menu_reader_mode">Reader View</string>
+    <string name="reader_theme_dark">Dark Theme</string>
+    <string name="reader_theme_sepia">Sepia Theme</string>
+    <string name="reader_theme_light">Light Theme</string>
+    <string name="reader_font_size">Font Size</string>
+    <string name="reader_reading_time">%1$d min read</string>
+    <string name="reader_mode_unavailable">Reading mode is not available for this page</string>
+
+    <!-- Phase 2: Safe Browsing -->
+    <string name="safebrowsing_warning_title">Security Warning</string>
+    <string name="safebrowsing_warning_msg">The site you are trying to visit has been flagged as unsafe or deceptive.</string>
+    <string name="safebrowsing_leave">Back to Safety</string>
+    <string name="safebrowsing_proceed">Proceed Anyway (Unsafe)</string>
+
+    <!-- Phase 2: Accessibility -->
+    <string name="settings_accessibility_title">Accessibility</string>
+    <string name="settings_high_contrast">High Contrast Mode</string>
+    <string name="settings_force_zoom">Force Enable Zoom</string>
+    <string name="settings_magnifier">Screen Magnifier</string>
+
+    <!-- Phase 2: Cookie & JavaScript Controls -->
+    <string name="settings_cookie_policy">Cookie Policy</string>
+    <string name="cookie_allow_all">Allow All Cookies</string>
+    <string name="cookie_block_third_party">Block Third-Party Cookies</string>
+    <string name="cookie_block_all">Block All Cookies</string>
+    <string name="settings_javascript">Enable JavaScript</string>
+
+    <!-- Phase 2: Bookmark Folders -->
+    <string name="bookmark_new_folder">New Folder</string>
+    <string name="bookmark_folder_name">Folder Name</string>
+    <string name="bookmark_folder_created">Folder Created</string>
+    <string name="bookmark_move_to_folder">Move to Folder</string>
+    <string name="bookmark_root_folder">Root Bookmarks</string>
+    <string name="bookmark_create">Create</string>
+
+    <!-- Phase 2: Voice Error Messages -->
+    <string name="voice_error_audio">Audio recording error</string>
+    <string name="voice_error_client">Client side error</string>
+    <string name="voice_error_permissions">Insufficient permissions</string>
+    <string name="voice_error_network">Network error</string>
+    <string name="voice_error_network_timeout">Network timeout</string>
+    <string name="voice_error_no_match">No speech recognized</string>
+    <string name="voice_error_busy">Recognition service busy</string>
+    <string name="voice_error_server">Server error</string>
+    <string name="voice_error_speech_timeout">No speech input detected</string>
+    <string name="voice_error_generic">Speech recognition error (%1$d)</string>
+
+    <!-- Options Menu Redesign Strings -->
+    <string name="menu_options_title">Options</string>
+    <string name="menu_badge_desktop">Desktop</string>
+    <string name="menu_badge_mobile">Mobile</string>
+    <string name="menu_shortcut_new_tab">Ctrl+T</string>
+    <string name="menu_shortcut_bookmark">Ctrl+D</string>
+
+    <!-- Phase 2: Accessibility Content Descriptions -->
+    <string name="desc_security_warning">Security Warning Icon</string>
+    <string name="desc_folder_icon">Folder Icon</string>
+    <string name="desc_web_icon">Web Page Icon</string>
 </resources>

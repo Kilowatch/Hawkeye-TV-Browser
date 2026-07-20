@@ -38,6 +38,27 @@ class SettingsViewModel @Inject constructor(
     private val _cursorSpeed = MutableStateFlow(settingsRepo.getCursorSpeed())
     val cursorSpeed: StateFlow<Float> = _cursorSpeed.asStateFlow()
 
+    private val _dohProvider = MutableStateFlow(settingsRepo.getDohProvider())
+    val dohProvider: StateFlow<String> = _dohProvider.asStateFlow()
+
+    private val _isAdBlockEnabled = MutableStateFlow(settingsRepo.isAdBlockEnabled())
+    val isAdBlockEnabled: StateFlow<Boolean> = _isAdBlockEnabled.asStateFlow()
+
+    private val _isSafeBrowsingEnabled = MutableStateFlow(settingsRepo.isSafeBrowsingEnabled())
+    val isSafeBrowsingEnabled: StateFlow<Boolean> = _isSafeBrowsingEnabled.asStateFlow()
+
+    private val _isHighContrastEnabled = MutableStateFlow(settingsRepo.isHighContrastEnabled())
+    val isHighContrastEnabled: StateFlow<Boolean> = _isHighContrastEnabled.asStateFlow()
+
+    private val _isForceZoomEnabled = MutableStateFlow(settingsRepo.isForceZoomEnabled())
+    val isForceZoomEnabled: StateFlow<Boolean> = _isForceZoomEnabled.asStateFlow()
+
+    private val _cookiePolicy = MutableStateFlow(settingsRepo.getCookiePolicy())
+    val cookiePolicy: StateFlow<String> = _cookiePolicy.asStateFlow()
+
+    private val _isJavaScriptEnabled = MutableStateFlow(settingsRepo.isJavaScriptEnabled())
+    val isJavaScriptEnabled: StateFlow<Boolean> = _isJavaScriptEnabled.asStateFlow()
+
     private var activeWebView: WebView? = null
 
     val searchEngines = SearchEngine.DEFAULTS
@@ -67,6 +88,46 @@ class SettingsViewModel @Inject constructor(
         val newValue = !_isPopupBlocking.value
         _isPopupBlocking.value = newValue
         settingsRepo.setPopupBlocking(newValue)
+    }
+
+    fun setDohProvider(provider: String) {
+        _dohProvider.value = provider
+        settingsRepo.setDohProvider(provider)
+    }
+
+    fun toggleAdBlock() {
+        val newValue = !_isAdBlockEnabled.value
+        _isAdBlockEnabled.value = newValue
+        settingsRepo.setAdBlockEnabled(newValue)
+    }
+
+    fun toggleSafeBrowsing() {
+        val newValue = !_isSafeBrowsingEnabled.value
+        _isSafeBrowsingEnabled.value = newValue
+        settingsRepo.setSafeBrowsingEnabled(newValue)
+    }
+
+    fun toggleHighContrast() {
+        val newValue = !_isHighContrastEnabled.value
+        _isHighContrastEnabled.value = newValue
+        settingsRepo.setHighContrastEnabled(newValue)
+    }
+
+    fun toggleForceZoom() {
+        val newValue = !_isForceZoomEnabled.value
+        _isForceZoomEnabled.value = newValue
+        settingsRepo.setForceZoomEnabled(newValue)
+    }
+
+    fun setCookiePolicy(policy: String) {
+        _cookiePolicy.value = policy
+        settingsRepo.setCookiePolicy(policy)
+    }
+
+    fun toggleJavaScript() {
+        val newValue = !_isJavaScriptEnabled.value
+        _isJavaScriptEnabled.value = newValue
+        settingsRepo.setJavaScriptEnabled(newValue)
     }
 
     fun setSearchEngine(engine: SearchEngine) {

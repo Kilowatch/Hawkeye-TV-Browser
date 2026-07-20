@@ -12,6 +12,13 @@ class BookmarkRepository @Inject constructor(
 ) {
     fun getAllBookmarks(): Flow<List<BookmarkEntity>> = bookmarkDao.getRootBookmarks()
 
+    fun getBookmarksInFolder(folderId: String?): Flow<List<BookmarkEntity>> =
+        if (folderId.isNullOrBlank()) {
+            bookmarkDao.getRootBookmarks()
+        } else {
+            bookmarkDao.getBookmarksInFolder(folderId)
+        }
+
     fun searchBookmarks(query: String): Flow<List<BookmarkEntity>> =
         bookmarkDao.searchBookmarks(query)
 

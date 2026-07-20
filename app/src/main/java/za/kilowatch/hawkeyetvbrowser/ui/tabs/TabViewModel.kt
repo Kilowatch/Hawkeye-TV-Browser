@@ -26,4 +26,8 @@ class TabViewModel @Inject constructor(
     fun createNewTab() {
         tabManagementUseCase.createTab()
     }
+
+    fun createIncognitoTab() {
+        tabManagementUseCase.createTab(incognito = true)
+    }
 }

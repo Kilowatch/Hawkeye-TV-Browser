@@ -157,7 +157,8 @@ class BrowserViewModel @Inject constructor(
 
     init {
         val isCursor = settingsRepo.isCursorMode()
-        updateState { copy(isCursorMode = isCursor) }
+        val isDesktop = settingsRepo.isDesktopMode()
+        updateState { copy(isCursorMode = isCursor, isDesktopMode = isDesktop) }
         inputManager.setCursorMode(isCursor)
         inputManager.onMenuPressed = { toggleToolbar() }
 
@@ -177,10 +178,73 @@ class BrowserViewModel @Inject constructor(
                 getActiveWebView()?.scrollBy(0, dy.toInt())
             }
         }
+    }
 
-        // onClickAt is wired in BrowserScreen (Compose layer) so it dispatches
-        // through the root DecorView, hitting both Compose UI elements (toolbar
-        // buttons, URL field) and the WebView at the cursor position.
+    fun loadStartPage() {
+        val activeId = tabManagementUseCase.activeTabId.value
+        val wv = tabManagementUseCase.getOrCreateWebView(activeId)
+        wv?.stopLoading()
+        wv?.loadUrl("about:blank")
+        wv?.clearHistory()
+        updateState {
+            copy(
+                currentUrl = "",
+                pageTitle = "",
+                searchText = "",
+                canGoBack = false,
+                canGoForward = false,
+                toolbarVisible = true,
+                webPageBackgroundColor = null
+            )
+        }
+    }
+
+    /**
+     * Handles D-pad back button press.
+     * Returns true if back was handled (web history or reset to start page with cleared edittext).
+     * Returns false if already on start page state with cleared edittext, allowing the app to close.
+     */
+    fun handleBackPressed(): Boolean {
+        val current = _state.value
+        val isStartPage = current.currentUrl.isBlank() || current.currentUrl == "about:blank"
+
+        // 1. If currently on the Start Page / Main Menu
+        if (isStartPage) {
+            if (current.searchText.isNotBlank()) {
+                // Clear search text if user typed URL text on the start page
+                updateState { copy(searchText = "") }
+                return true
+            }
+            // Clear history backstack and return false to allow app exit
+            getActiveWebView()?.clearHistory()
+            return false
+        }
+
+        // 2. If on a website, check WebView history backstack
+        val wv = getActiveWebView()
+        if (wv != null && wv.canGoBack()) {
+            val historyList = wv.copyBackForwardList()
+            val currentIndex = historyList.currentIndex
+            if (currentIndex > 0) {
+                val prevUrl = historyList.getItemAtIndex(currentIndex - 1)?.url ?: ""
+                // If previous history item is about:blank or start page, reset to Start Page & clear history
+                if (prevUrl.isBlank() || prevUrl == "about:blank") {
+                    loadStartPage()
+                    return true
+                }
+            }
+            wv.goBack()
+            updateNavState()
+            return true
+        }
+
+        // 3. No web history remains -> return to Start Page & clear history
+        loadStartPage()
+        return true
+    }
+
+    fun onBackPressed() {
+        handleBackPressed()
     }
 
     fun setupWebViewClients(webView: WebView) {
@@ -323,15 +387,6 @@ class BrowserViewModel @Inject constructor(
                 it.loadUrl(url)
             }
             updateState { copy(currentUrl = url, searchText = url) }
-        }
-    }
-
-    fun onBackPressed() {
-        getActiveWebView()?.let {
-            if (it.canGoBack()) {
-                it.goBack()
-                updateNavState()
-            }
         }
     }
 

@@ -175,11 +175,9 @@ fun BrowserScreen(
                     handleKeyboardShortcut(ke, browserViewModel, mainViewModel)
                     return@onPreviewKeyEvent true
                 }
-                // Back button: navigate browser history before letting system handle it
+                // Back button: navigate web history or reset to Start Page before allowing app exit
                 if (ke.keyCode == KeyEvent.KEYCODE_BACK) {
-                    val wv = webView
-                    if (wv != null && wv.canGoBack()) {
-                        browserViewModel.onBackPressed()
+                    if (browserViewModel.handleBackPressed()) {
                         return@onPreviewKeyEvent true
                     }
                     return@onPreviewKeyEvent false

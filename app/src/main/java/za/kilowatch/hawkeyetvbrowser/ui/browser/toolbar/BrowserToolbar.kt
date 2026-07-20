@@ -20,35 +20,39 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.path
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DesktopWindows
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.ripple
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,14 +61,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import za.kilowatch.hawkeyetvbrowser.R
 
 @Composable
@@ -88,28 +98,30 @@ fun BrowserToolbar(
     onToggleDesktopMode: () -> Unit,
     onOpenBookmarks: () -> Unit,
     onOpenHistory: () -> Unit,
-    onOpenSettings: () -> Unit,
-    onToggleIncognito: () -> Unit,
+    onOpenSettings: () -> Unit = {},
+    onToggleIncognito: () -> Unit = {},
     onToggleCursorMode: () -> Unit = {},
     onZoomIn: () -> Unit = {},
     onZoomOut: () -> Unit = {},
+    onVoiceSearch: () -> Unit = {},
+    onOpenReaderMode: () -> Unit = {},
     webPageBackgroundColor: Color? = null,
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     val accentColor = if (isIncognito) Color(0xFFD682FF) else Color(0xFF00F0FF)
 
-    // Dynamic color matching
-    val baseBg = webPageBackgroundColor ?: MaterialTheme.colorScheme.surface
-    val isLightBg = baseBg.luminance() > 0.5f
+    // Dynamic color matching (matching Image 1b light frosted glass by default for start page & light sites)
+    val isLightBg = webPageBackgroundColor == null || webPageBackgroundColor.luminance() > 0.5f
+    val baseBg = webPageBackgroundColor ?: Color(0xFFF3F0F8)
 
-    val targetBgColor = baseBg.copy(alpha = 0.92f)
+    val targetBgColor = if (isLightBg) baseBg.copy(alpha = 0.95f) else Color(0xFF19110B).copy(alpha = 0.95f)
     val animatedBgColor by animateColorAsState(targetValue = targetBgColor, label = "ToolbarBgColor")
 
-    val targetContentColor = if (isLightBg) Color(0xFF151419) else Color(0xFFFFF8E1)
+    val targetContentColor = if (isLightBg) Color(0xFF2B2735) else Color(0xFFFFF8E1)
     val animatedContentColor by animateColorAsState(targetValue = targetContentColor, label = "ToolbarContentColor")
 
-    val targetOutlineColor = if (isLightBg) Color(0x2B000000) else MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)
+    val targetOutlineColor = if (isLightBg) Color(0xFFE2DDD7) else Color(0xFFFFB300).copy(alpha = 0.25f)
     val animatedOutlineColor by animateColorAsState(targetValue = targetOutlineColor, label = "ToolbarOutlineColor")
 
     AnimatedVisibility(
@@ -122,7 +134,7 @@ fun BrowserToolbar(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         ) {
-            // Glassmorphic toolbar panel
+            // Light Frosted Glass Toolbar Panel (Image 1b)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -168,7 +180,7 @@ fun BrowserToolbar(
                     isCursorMode = isCursorMode
                 )
 
-                 // URL Field
+                // URL Field
                 ToolbarUrlField(
                     value = urlText,
                     onValueChange = onUrlChanged,
@@ -178,6 +190,16 @@ fun BrowserToolbar(
                     isLightBg = isLightBg,
                     isCursorMode = isCursorMode,
                     modifier = Modifier.weight(1f)
+                )
+
+                // Voice Search Button
+                ToolbarIconButton(
+                    icon = Icons.Default.Mic,
+                    contentDescription = stringResource(R.string.voice_search_mic_desc),
+                    onClick = onVoiceSearch,
+                    isIncognito = isIncognito,
+                    contentColor = animatedContentColor,
+                    isCursorMode = isCursorMode
                 )
 
                 // Zoom Out Button
@@ -211,60 +233,120 @@ fun BrowserToolbar(
                         isCursorMode = isCursorMode
                     )
 
-                    // Modern Dropdown Menu styling
-                    MaterialTheme(
-                        colorScheme = MaterialTheme.colorScheme.copy(
-                            surface = MaterialTheme.colorScheme.surface
-                        )
+                    // Options Dropdown Menu adapting dynamically to website background color
+                    val menuBaseBg = webPageBackgroundColor ?: Color(0xFF19110B)
+                    val menuIsLightBg = webPageBackgroundColor != null && webPageBackgroundColor.luminance() > 0.5f
+                    val menuBgColor = if (menuIsLightBg) menuBaseBg.copy(alpha = 0.98f) else Color(0xFF19110B).copy(alpha = 0.96f)
+                    val animatedMenuBgColor by animateColorAsState(targetValue = menuBgColor, label = "MenuBgColor")
+
+                    val menuHeaderColor = if (isIncognito) Color(0xFFD682FF) else if (menuIsLightBg) Color(0xFFE65100) else Color(0xFFFFB300)
+                    val menuBorderColor = if (isIncognito) Color(0xFFD682FF).copy(alpha = 0.5f) else if (menuIsLightBg) Color(0xFFE65100).copy(alpha = 0.35f) else Color(0xFFFFB300).copy(alpha = 0.5f)
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false },
+                        modifier = Modifier
+                            .width(300.dp)
+                            .background(animatedMenuBgColor)
+                            .border(
+                                width = 1.5.dp,
+                                color = menuBorderColor,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clip(RoundedCornerShape(20.dp))
+                            .padding(8.dp)
                     ) {
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false },
+                        // Header Title
+                        Row(
                             modifier = Modifier
-                                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.95f))
-                                .border(
-                                    1.dp,
-                                    MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-                                    RoundedCornerShape(12.dp)
-                                )
-                                .clip(RoundedCornerShape(12.dp))
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_new_tab)) },
-                                onClick = { showMenu = false; onNewTab() },
-                                colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.onSurface)
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_new_incognito_tab)) },
-                                onClick = { showMenu = false; onNewIncognitoTab() },
-                                colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.onSurface)
-                            )
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        if (isDesktopMode) stringResource(R.string.menu_mobile_site)
-                                        else stringResource(R.string.menu_desktop_site)
-                                    )
-                                },
-                                onClick = { showMenu = false; onToggleDesktopMode() },
-                                colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.onSurface)
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_bookmarks)) },
-                                onClick = { showMenu = false; onOpenBookmarks() },
-                                colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.onSurface)
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_history)) },
-                                onClick = { showMenu = false; onOpenHistory() },
-                                colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.onSurface)
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_settings)) },
-                                onClick = { showMenu = false; onOpenSettings() },
-                                colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.onSurface)
+                            Text(
+                                text = stringResource(R.string.menu_options_title).uppercase(),
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.5.sp,
+                                color = menuHeaderColor
                             )
                         }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(menuHeaderColor.copy(alpha = 0.25f))
+                        )
+
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        TvDropdownMenuItem(
+                            text = stringResource(R.string.menu_new_tab),
+                            icon = Icons.Default.Add,
+                            onClick = { showMenu = false; onNewTab() },
+                            badgeText = stringResource(R.string.menu_shortcut_new_tab),
+                            isIncognito = isIncognito,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode
+                        )
+
+                        TvDropdownMenuItem(
+                            text = stringResource(R.string.menu_new_incognito_tab),
+                            icon = Icons.Default.Security,
+                            onClick = { showMenu = false; onNewIncognitoTab() },
+                            isIncognito = true,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode,
+                            accentColorOverride = Color(0xFFD682FF)
+                        )
+
+                        TvDropdownMenuItem(
+                            text = if (isDesktopMode) stringResource(R.string.menu_mobile_site) else stringResource(R.string.menu_desktop_site),
+                            icon = if (isDesktopMode) Icons.Default.Smartphone else Icons.Default.DesktopWindows,
+                            onClick = { showMenu = false; onToggleDesktopMode() },
+                            badgeText = if (isDesktopMode) stringResource(R.string.menu_badge_desktop) else stringResource(R.string.menu_badge_mobile),
+                            isIncognito = isIncognito,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode
+                        )
+
+                        TvDropdownMenuItem(
+                            text = stringResource(R.string.menu_reader_mode),
+                            icon = Icons.AutoMirrored.Filled.MenuBook,
+                            onClick = { showMenu = false; onOpenReaderMode() },
+                            isIncognito = isIncognito,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode
+                        )
+
+                        TvDropdownMenuItem(
+                            text = stringResource(R.string.menu_bookmarks),
+                            icon = Icons.Default.Bookmark,
+                            onClick = { showMenu = false; onOpenBookmarks() },
+                            badgeText = stringResource(R.string.menu_shortcut_bookmark),
+                            isIncognito = isIncognito,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode
+                        )
+
+                        TvDropdownMenuItem(
+                            text = stringResource(R.string.menu_history),
+                            icon = Icons.Default.History,
+                            onClick = { showMenu = false; onOpenHistory() },
+                            isIncognito = isIncognito,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode
+                        )
+
+                        TvDropdownMenuItem(
+                            text = stringResource(R.string.menu_settings),
+                            icon = Icons.Default.Settings,
+                            onClick = { showMenu = false; onOpenSettings() },
+                            isIncognito = isIncognito,
+                            isLightBg = menuIsLightBg,
+                            isCursorMode = isCursorMode
+                        )
                     }
                 }
             }
@@ -334,7 +416,7 @@ fun ToolbarIconButton(
         targetValue = when {
             !enabled -> Color.Transparent
             showHighlight -> accentColor.copy(alpha = 0.40f)
-            else -> contentColor.copy(alpha = 0.1f)
+            else -> contentColor.copy(alpha = 0.15f)
         },
         label = "ButtonBorder"
     )
@@ -380,7 +462,7 @@ fun ToolbarUrlField(
 
     val showHighlight = isHovered || (isFocused && !isCursorMode)
 
-    val accentColor = if (isIncognito) Color(0xFFD682FF) else Color(0xFF00F0FF)
+    val activeAccentColor = if (isIncognito) Color(0xFFD682FF) else if (isLightBg) Color(0xFFE65100) else Color(0xFF00F0FF)
 
     val scale by animateFloatAsState(
         targetValue = if (showHighlight) 1.015f else 1.0f,
@@ -390,21 +472,26 @@ fun ToolbarUrlField(
 
     val borderColor by animateColorAsState(
         targetValue = when {
-            isFocused -> accentColor
-            isHovered -> accentColor.copy(alpha = 0.5f)
-            isLightBg -> Color(0xFF000000).copy(alpha = 0.12f)
-            else -> Color(0xFFFFFFFF).copy(alpha = 0.12f)
+            isFocused -> activeAccentColor
+            isHovered -> activeAccentColor.copy(alpha = 0.6f)
+            isLightBg -> Color(0xFFD0C9DB)
+            else -> Color(0xFFFFB300).copy(alpha = 0.25f)
         },
         label = "FieldBorder"
     )
 
     val containerColor by animateColorAsState(
-        targetValue = if (isLightBg) {
-            Color(0xFF000000).copy(alpha = 0.05f) // Subtle light-grey background
-        } else {
-            Color(0xFFFFFFFF).copy(alpha = 0.06f) // Subtle dark-grey background
-        }
+        targetValue = when {
+            isLightBg && (isFocused || isHovered) -> Color(0xFFDCD7E6)
+            isLightBg -> Color(0xFFE4E0EC)
+            isFocused || isHovered -> Color(0xFF000000).copy(alpha = 0.45f)
+            else -> Color(0xFF000000).copy(alpha = 0.30f)
+        },
+        label = "FieldBg"
     )
+
+    val textColor = if (isLightBg) Color(0xFF2B2735) else Color(0xFFFFF8E1)
+    val placeholderColor = if (isLightBg) Color(0xFF656173) else Color(0xFFFFF8E1).copy(alpha = 0.5f)
 
     BasicTextField(
         value = value,
@@ -417,14 +504,14 @@ fun ToolbarUrlField(
         interactionSource = interactionSource,
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyMedium.copy(
-            color = contentColor
+            color = textColor
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Uri,
             imeAction = ImeAction.Go
         ),
         keyboardActions = KeyboardActions(onGo = { onGo() }),
-        cursorBrush = SolidColor(accentColor),
+        cursorBrush = SolidColor(if (isLightBg) Color(0xFF2B2735) else activeAccentColor),
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier
@@ -435,7 +522,7 @@ fun ToolbarUrlField(
                 if (value.isEmpty()) {
                     Text(
                         text = stringResource(R.string.search_or_enter_url),
-                        color = contentColor.copy(alpha = 0.5f),
+                        color = placeholderColor,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -443,6 +530,150 @@ fun ToolbarUrlField(
             }
         }
     )
+}
+
+@Composable
+fun TvDropdownMenuItem(
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    badgeText: String? = null,
+    isIncognito: Boolean = false,
+    isLightBg: Boolean = false,
+    isCursorMode: Boolean = true,
+    accentColorOverride: Color? = null,
+    modifier: Modifier = Modifier
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHovered by interactionSource.collectIsHoveredAsState()
+    val isFocused by interactionSource.collectIsFocusedAsState()
+
+    val showHighlight = isHovered || (isFocused && !isCursorMode)
+    val accentColor = accentColorOverride ?: if (isIncognito) Color(0xFFD682FF) else if (isLightBg) Color(0xFFE65100) else Color(0xFFFFB300)
+
+    val scale by animateFloatAsState(
+        targetValue = if (showHighlight) 1.04f else 1.0f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
+        label = "MenuItemScale"
+    )
+
+    val containerColor by animateColorAsState(
+        targetValue = when {
+            showHighlight -> accentColor.copy(alpha = if (isLightBg) 0.14f else 0.18f)
+            else -> Color.Transparent
+        },
+        label = "MenuItemBg"
+    )
+
+    val defaultContentColor = if (isLightBg) Color(0xFF151419) else Color(0xFFFFF8E1)
+
+    val contentColor by animateColorAsState(
+        targetValue = when {
+            showHighlight -> accentColor
+            else -> defaultContentColor.copy(alpha = 0.90f)
+        },
+        label = "MenuItemContent"
+    )
+
+    val borderColor by animateColorAsState(
+        targetValue = when {
+            showHighlight -> accentColor.copy(alpha = 0.45f)
+            else -> Color.Transparent
+        },
+        label = "MenuItemBorder"
+    )
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .graphicsLayer(scaleX = scale, scaleY = scale)
+            .clip(RoundedCornerShape(14.dp))
+            .background(containerColor)
+            .border(1.dp, borderColor, RoundedCornerShape(14.dp))
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple(color = accentColor),
+                onClick = onClick
+            )
+            .padding(horizontal = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(
+                        if (showHighlight) {
+                            accentColor.copy(alpha = 0.15f)
+                        } else if (isLightBg) {
+                            Color.Black.copy(alpha = 0.05f)
+                        } else {
+                            Color.White.copy(alpha = 0.05f)
+                        }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = text,
+                    tint = contentColor,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+
+            Text(
+                text = text,
+                color = contentColor,
+                fontSize = 14.sp,
+                fontWeight = if (showHighlight) FontWeight.Bold else FontWeight.Medium,
+                letterSpacing = 0.3.sp
+            )
+        }
+
+        if (badgeText != null) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(
+                        if (showHighlight) {
+                            accentColor.copy(alpha = 0.25f)
+                        } else if (isLightBg) {
+                            Color.Black.copy(alpha = 0.06f)
+                        } else {
+                            Color.White.copy(alpha = 0.08f)
+                        }
+                    )
+                    .border(
+                        1.dp,
+                        if (showHighlight) {
+                            accentColor.copy(alpha = 0.5f)
+                        } else if (isLightBg) {
+                            Color.Black.copy(alpha = 0.12f)
+                        } else {
+                            Color.White.copy(alpha = 0.12f)
+                        },
+                        RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 3.dp)
+            ) {
+                Text(
+                    text = badgeText,
+                    color = if (showHighlight) accentColor else defaultContentColor.copy(alpha = 0.65f),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
 }
 
 val Icons_Default_ZoomIn = ImageVector.Builder(
