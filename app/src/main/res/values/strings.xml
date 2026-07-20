@@ -104,4 +104,16 @@
     <!-- Navigation Mode -->
     <string name="cursor_mode">Cursor Mode</string>
     <string name="spatial_mode">Spatial Mode</string>
+
+    <!-- Download Dialog -->
+    <string name="download_dialog_downloading">Downloading File…</string>
+    <string name="download_dialog_completed">Download Completed</string>
+    <string name="download_dialog_failed">Download Failed</string>
+    <string name="download_dialog_cancelled">Download Cancelled</string>
+    <string name="download_dialog_saved_successfully">File saved successfully (%1$s).</string>
+    <string name="download_dialog_unknown_error">An unknown error occurred during download.</string>
+    <string name="download_dialog_cancelled_msg">The download was cancelled.</string>
+    <string name="download_dialog_close">Close</string>
+    <string name="download_dialog_dismiss">Dismiss</string>
+    <string name="download_dialog_downloading_status">Downloading…</string>
 </resources>

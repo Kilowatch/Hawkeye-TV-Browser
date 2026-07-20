@@ -65,9 +65,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.compose.ui.platform.LocalContext
 import za.kilowatch.hawkeyetvbrowser.R
 import za.kilowatch.hawkeyetvbrowser.ui.browser.toolbar.BrowserToolbar
 import za.kilowatch.hawkeyetvbrowser.ui.common.CursorOverlay
+import za.kilowatch.hawkeyetvbrowser.ui.common.DownloadProgressDialog
 import za.kilowatch.hawkeyetvbrowser.ui.main.MainViewModel
 import za.kilowatch.hawkeyetvbrowser.ui.theme.DefaultCursorColor
 
@@ -82,7 +84,9 @@ fun BrowserScreen(
 ) {
     val state by browserViewModel.state.collectAsState()
     val pendingCode by browserViewModel.pendingDownloaderCode.collectAsState()
+    val downloadProgress by browserViewModel.downloadProgress.collectAsState()
     val activeTab by browserViewModel.activeTab.collectAsState()
+    val context = LocalContext.current
 
     // Get the active tab's WebView through the ViewModel
     val webView = remember(activeTab.id) {
@@ -342,6 +346,18 @@ fun BrowserScreen(
                     ) {
                         Text(stringResource(R.string.downloader_cancel))
                     }
+                }
+            )
+        }
+
+        // Live download progress dialog for APKs and all file downloads
+        downloadProgress?.let { progress ->
+            DownloadProgressDialog(
+                progress = progress,
+                onCancel = { browserViewModel.cancelDownload() },
+                onDismiss = { browserViewModel.dismissDownloadDialog() },
+                onInstallApk = { filePath ->
+                    browserViewModel.installApk(context, filePath)
                 }
             )
         }

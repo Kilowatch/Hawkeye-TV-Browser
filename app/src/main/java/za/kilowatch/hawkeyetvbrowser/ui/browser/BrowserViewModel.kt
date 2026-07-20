@@ -15,8 +15,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
 import za.kilowatch.hawkeyetvbrowser.core.downloader.DestinationType
+import za.kilowatch.hawkeyetvbrowser.core.downloader.DownloadProgress
+import za.kilowatch.hawkeyetvbrowser.core.downloader.DownloadStatus
 import za.kilowatch.hawkeyetvbrowser.core.downloader.DownloaderCodeValidator
+import za.kilowatch.hawkeyetvbrowser.core.downloader.FileDownloader
 import za.kilowatch.hawkeyetvbrowser.core.input.InputManager
 import za.kilowatch.hawkeyetvbrowser.core.webview.HawkeyeWebChromeClient
 import za.kilowatch.hawkeyetvbrowser.core.webview.HawkeyeWebViewClient
@@ -62,7 +66,8 @@ class BrowserViewModel @Inject constructor(
     private val bookmarkUseCase: BookmarkUseCase,
     private val historyUseCase: HistoryUseCase,
     val inputManager: InputManager,
-    private val settingsRepo: SettingsRepository
+    private val settingsRepo: SettingsRepository,
+    private val fileDownloader: FileDownloader
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(BrowserUiState())
@@ -71,6 +76,10 @@ class BrowserViewModel @Inject constructor(
     private val _pendingDownloaderCode = MutableStateFlow<DownloaderCodeInfo?>(null)
     val pendingDownloaderCode: StateFlow<DownloaderCodeInfo?> =
         _pendingDownloaderCode.asStateFlow()
+
+    private val _downloadProgress = MutableStateFlow<DownloadProgress?>(null)
+    val downloadProgress: StateFlow<DownloadProgress?> = _downloadProgress.asStateFlow()
+    private var downloadJob: Job? = null
 
     private val downloaderCodeValidator = DownloaderCodeValidator()
 
@@ -177,6 +186,63 @@ class BrowserViewModel @Inject constructor(
     fun setupWebViewClients(webView: WebView) {
         webView.webViewClient = createWebViewClient()
         webView.webChromeClient = createChromeClient()
+        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, _ ->
+            startDownload(
+                url = url,
+                customFileName = null,
+                userAgent = userAgent,
+                contentDisposition = contentDisposition,
+                mimeType = mimetype
+            )
+        }
+    }
+
+    fun startDownload(
+        url: String,
+        customFileName: String? = null,
+        userAgent: String? = null,
+        contentDisposition: String? = null,
+        mimeType: String? = null
+    ) {
+        downloadJob?.cancel()
+        downloadJob = viewModelScope.launch {
+            fileDownloader.downloadFile(
+                url = url,
+                customFileName = customFileName,
+                userAgent = userAgent,
+                contentDisposition = contentDisposition,
+                mimeType = mimeType
+            ).collect { progress ->
+                _downloadProgress.value = progress
+            }
+        }
+    }
+
+    fun cancelDownload() {
+        downloadJob?.cancel()
+        _downloadProgress.value = _downloadProgress.value?.copy(status = DownloadStatus.CANCELLED)
+    }
+
+    fun dismissDownloadDialog() {
+        _downloadProgress.value = null
+    }
+
+    fun installApk(context: android.content.Context, filePath: String) {
+        try {
+            val file = java.io.File(filePath)
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/vnd.android.package-archive")
+                flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            _errorMessage.tryEmit("Failed to launch APK installer: ${e.localizedMessage}")
+        }
     }
 
     /**
@@ -231,7 +297,13 @@ class BrowserViewModel @Inject constructor(
 
     fun onDownloaderCodeConfirmed(url: String) {
         _pendingDownloaderCode.value = null
-        loadUrl(url)
+        val destinationType = downloaderCodeValidator.classifyDestination(url)
+        val lowerUrl = url.lowercase()
+        if (destinationType == DestinationType.APK_FILE || lowerUrl.endsWith(".apk") || lowerUrl.endsWith(".zip") || lowerUrl.endsWith(".rar")) {
+            startDownload(url)
+        } else {
+            loadUrl(url)
+        }
     }
 
     fun onDownloaderCodeDismissed() {
